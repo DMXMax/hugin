@@ -4,7 +4,8 @@ import (
 	"fmt"
 	 "math"
 	"log"
-
+	"os"
+	"errors"
 	owm "github.com/briandowns/openweathermap"
 	"github.com/bwmarrin/discordgo"
 )
@@ -15,8 +16,17 @@ type WindVelocity struct{
 	MpH float64
 }
 
-func HandleWeatherRequest(WeatherToken string, 
-	s *discordgo.Session, m *discordgo.MessageCreate) {
+
+var WeatherToken string
+
+func Init() error {
+	if WeatherToken = os.Getenv("NOPPA_WEATHER"); WeatherToken == "" {
+	return errors.New("No weather token")	
+	}
+	return nil //No error
+}
+
+func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	type City struct {
 		name  string
