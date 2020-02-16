@@ -8,9 +8,9 @@ import (
 	"syscall"
 
 	"github.com/DMXMax/noppa/hugindb"
+	msg "github.com/DMXMax/noppa/msghandler"
 	"github.com/DMXMax/noppa/weather"
 	"github.com/bwmarrin/discordgo"
-	msg "github.com/DMXMax/noppa/msghandler"
 )
 
 // Variables used for command line parameters
@@ -20,11 +20,11 @@ var (
 
 func main() {
 
-	if err := weather.Init(); err != nil{
+	if err := weather.Init(); err != nil {
 		log.Fatalln("Error intializing weather service", err)
 		os.Exit(1)
 	}
-	if err := hugindb.Init(); err != nil{
+	if err := hugindb.Init(); err != nil {
 		log.Fatalln("Error initializing database", err)
 		os.Exit(1)
 	}
@@ -60,7 +60,6 @@ func main() {
 	dg.Close()
 	hugindb.DB.Close()
 }
-
 
 func ready(s *discordgo.Session, event *discordgo.Ready) {
 

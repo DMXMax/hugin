@@ -1,67 +1,76 @@
 package dictionary
 
 import (
+	"database/sql"
 	"fmt"
-	dg "github.com/bwmarrin/discordgo"
 	"github.com/DMXMax/noppa/hugindb"
+	dg "github.com/bwmarrin/discordgo"
 	"log"
 )
 
+type Definition struct {
+	acronym    string
+	definition string
+	adv_flag   bool
+	adv_url    sql.NullString
+	adv_image  sql.NullString
+	adv_text   sql.NullString
+}
 
-func HandleDictionaryRequest(words []string, s *dg.Session, m *dg.MessageCreate) {
+const qry = "SELECT acronym, definition, adv_flag, adv_url, adv_image, " +
+	"adv_text FROM TLA WHERE idx = ?"
+
+func HandleDictionaryRequest(words []string, s *dg.Session,
+	m *dg.MessageCreate) {
 	var (
-		acronym    string
-		definition string
+		def Definition
 	)
-	err := hugindb.DB.QueryRow(
-		"SELECT acronym, definition FROM TLA where idx = ?", words[0]).
-		Scan(&acronym, &definition)
-	if err != nil {
-		s.ChannelMessageSend(m.ChannelID,
-			fmt.Sprintf("I don't know what %v is.", words[0]))
+	if len(words) > 0 {
+		err := hugindb.DB.QueryRow(qry, words[0]).Scan(&def.acronym,
+			&def.definition, &def.adv_flag, &def.adv_url,
+			&def.adv_image, &def.adv_text)
+		if err != nil {
+			log.Printf("%s\n", err)
+			s.ChannelMessageSend(m.ChannelID,
+				fmt.Sprintf("I don't know what %v is.", words[0]))
+		} else {
+			log.Printf("Definition: %s: Has Advanced Info: %t\n", words[0], def.adv_flag)
+			if def.adv_flag {
+				ComplexDefSend(s, m, &def)
+			} else {
+				s.ChannelMessageSend(m.ChannelID,
+					fmt.Sprintf("%s:  %s", def.acronym, def.definition))
+			}
+		}
 	} else {
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s:  %s", acronym, definition))
+		s.ChannelMessageSend(m.ChannelID, "What do you want to know? Type !def <word>")
 	}
 }
 
-
-func testComplexSend(s *dg.Session, m *dg.MessageCreate) {
-	field1 := dg.MessageEmbedField{"Name1", "Value1", true}
-	field2 := dg.MessageEmbedField{"Name2", "Value2", false}
-
-	fields := []*dg.MessageEmbedField{&field1, &field2}
-	video := dg.MessageEmbedVideo{
-		URL:    "https://www.youtube.com/watch?v=KcmiqQ9NpPE&list=PLC430F6A783A88697",
-		Width:  10,
-		Height: 10,
-	}
-	image := dg.MessageEmbedImage{
-		URL:    "https://upload.wikimedia.org/wikipedia/commons/c/c5/StudioFibonacci_Cartoon_Bat.png",
-		Width:  10,
-		Height: 10,
-	}
-
-	author := dg.MessageEmbedAuthor{Name: "BobbyJoe"}
-	provider := dg.MessageEmbedProvider{Name: "ProviderJoe"}
+func ComplexDefSend(s *dg.Session, m *dg.MessageCreate, def *Definition) {
 
 	embed := dg.MessageEmbed{
-		URL:         "https://www.youtube.com/watch?v=KcmiqQ9NpPE&list=PLC430F6A783A88697",
-		Title:       "A Title!",
-		Color:       0,
-		Description: "A Description",
-		Fields:      fields,
-		Video:       &video,
-		Author:      &author,
-		Provider:    &provider,
-		Image:       &image,
+		Title:       def.acronym,
+		Description: def.definition,
 	}
+	if def.adv_image.Valid {
+		embed.Image = &dg.MessageEmbedImage{
+			URL: def.adv_image.String,
+		}
+	}
+
+	if def.adv_url.Valid {
+		embed.URL = def.adv_url.String
+	}
+
+	if def.adv_text.Valid {
+		embed.Description = def.adv_text.String
+	}
+
 	msgSend := dg.MessageSend{
-		Content: "Content",
 		Embed:   &embed,
 	}
-	if msg, err := s.ChannelMessageSendComplex(m.ChannelID, &msgSend); err != nil {
+	if _, err := s.ChannelMessageSendComplex(m.ChannelID, &msgSend); err != nil {
 		log.Printf("Error %v\n", err)
-	} else {
-		log.Printf("Message %v\n", msg)
 	}
 }

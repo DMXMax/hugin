@@ -44,17 +44,11 @@ func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 			s.ChannelMessageSend(m.ChannelID,"I cannot get the weather right now.")
 		} else {
 			w.CurrentByID(c.locID)
-			log.Println(w)
-			log.Printf("The current temperature in %s is %v degrees\n", w.Name, w.Main.Temp)
-			log.Println(len(w.Weather))
-			log.Println(w.Weather[0].Description)
-			log.Printf("Wind: Direction %v, Speed %v\n", w.Wind.Deg, w.Wind.Speed)
-			log.Printf("Rain: %#v\n", w.Rain)
-			log.Printf("Snow: %#v\n", w.Snow)
 		var wv = convertWindVelocity(w.Wind.Speed)	
 		s.ChannelMessageSend(m.ChannelID, 
-		fmt.Sprintf("WCOC Action Weather For %v: %v.\nThe current temperature is %v degrees Celcius, "+
-			"%v degrees Farenheit.\nHumidity is %v%%, winds are out of the %v at %.1f kph (%.1f mph)",
+		fmt.Sprintf("WCOC Action Weather For %v: %v.\nThe current "+
+		"temperature is %v degrees Celcius, %v degrees Farenheit.\n"+
+		"Humidity is %v%%, winds are out of the %v at %.1f kph (%.1f mph)",
 			c.name,
 			w.Weather[0].Description,
 			math.Round(w.Main.Temp),
