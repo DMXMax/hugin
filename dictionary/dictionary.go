@@ -1,14 +1,13 @@
 package dictionary
 
 import (
-	_ "database/sql"
 	 "fmt"
-	_ "github.com/DMXMax/noppa/hugindb"
 	dg "github.com/bwmarrin/discordgo"
 	"log"
 	"cloud.google.com/go/datastore"
 	"google.golang.org/api/iterator"
 	"context"
+	"strings"
 )
 
 type NewDef struct {
@@ -39,7 +38,8 @@ func HandleDictionaryRequest(words []string, s *dg.Session,
 
 	if client, err := datastore.NewClient(ctx, "hugin-00001");err == nil{
 		log.Println("Got a client")
-		q := datastore.NewQuery("dictEntry").Filter("word =", words[0])
+		q := datastore.NewQuery("dictEntry").Filter("word =", strings.
+			ToLower(words[0]))
 		t := client.Run(ctx, q)
 		def :=  NewDef{}
 		if key,err := t.Next(&def); err == nil{
