@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/DMXMax/noppa/hugindb"
 	msg "github.com/DMXMax/noppa/msghandler"
 	"github.com/DMXMax/noppa/weather"
 	"github.com/bwmarrin/discordgo"
@@ -22,10 +21,6 @@ func main() {
 
 	if err := weather.Init(); err != nil {
 		log.Fatalln("Error intializing weather service", err)
-		os.Exit(1)
-	}
-	if err := hugindb.Init(); err != nil {
-		log.Fatalln("Error initializing database", err)
 		os.Exit(1)
 	}
 	if DiscordToken = os.Getenv("NOPPA_PIE"); DiscordToken == "" {
@@ -58,7 +53,6 @@ func main() {
 
 	// Cleanly close down the Discord session.
 	dg.Close()
-	hugindb.DB.Close()
 }
 
 func ready(s *discordgo.Session, event *discordgo.Ready) {

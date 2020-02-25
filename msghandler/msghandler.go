@@ -1,6 +1,7 @@
 package msghandler 
 
 import (
+	"log"
 	"fmt"
 	"strings"
 	"github.com/DMXMax/noppa/dictionary"
@@ -20,6 +21,13 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if shushFlag && m.Author.ID != "427628065720500239"{
 		return
 	}
+	log.Printf("Guild %v\n", m.GuildID)
+	if g,err := s.Guild(m.GuildID); err == nil {
+		log.Printf("Guild = %v\n", g.Name)
+	} else {
+		log.Println(err)
+	}
+
 	msgflds := strings.Fields(m.Content)
 	if len(msgflds) > 0 {
 		switch strings.ToLower(msgflds[0]) {
@@ -43,9 +51,5 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-type User struct{
-	UserID string
-	Scopes []string
-}
 
 
