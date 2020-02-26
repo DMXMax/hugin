@@ -8,6 +8,7 @@ import (
 	"errors"
 	owm "github.com/briandowns/openweathermap"
 	"github.com/bwmarrin/discordgo"
+	"github.com/DMXMax/noppa/command"
 )
 
 
@@ -26,7 +27,13 @@ func Init() error {
 	return nil //No error
 }
 
-func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
+var WeatherCommand command.Command = command.Command{
+	Name : "GetWeather",
+	Scope : "any",
+	Op : HandleWeatherRequest,
+}
+
+func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) error {
 
 	type City struct {
 		name  string
@@ -60,6 +67,7 @@ func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) {
 	
 	}
 }
+	return nil
 }
 
 func getWindDirection(dir float64) string{

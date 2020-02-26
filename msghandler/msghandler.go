@@ -8,6 +8,7 @@ import (
 	"github.com/DMXMax/noppa/weather"
 	"github.com/bwmarrin/discordgo"
 	"github.com/DMXMax/noppa/whois"
+	"github.com/DMXMax/noppa/command"
 )
 
 var shushFlag bool = false
@@ -32,7 +33,8 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if len(msgflds) > 0 {
 		switch strings.ToLower(msgflds[0]) {
 		case "!weather":
-			weather.HandleWeatherRequest(s, m)
+			//weather.HandleWeatherRequest(s, m)
+			_ = weather.WeatherCommand.Call(s,m)
 		case "!def":
 			dictionary.HandleDictionaryRequest(msgflds[1:], s, m)
 		case "!ping":
@@ -41,11 +43,13 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case "!whois":
 			whois.HandleRequest(msgflds[1:], s,m)
 		case "!shush":
-			shushFlag = !shushFlag
-			if shushFlag{
-				s.ChannelMessageSend(m.ChannelID, "Entering Shush Mode")
-			} else {
-				s.ChannelMessageSend(m.ChannelID, "Listening")
+			if err := command.ShushCommand.Call(s,m); err == nil{
+				shushFlag = !shushFlag
+				if shushFlag{
+					s.ChannelMessageSend(m.ChannelID, "Entering Shush Mode")
+				} else {
+					s.ChannelMessageSend(m.ChannelID, "Listening")
+				}
 			}
 		}
 	}
