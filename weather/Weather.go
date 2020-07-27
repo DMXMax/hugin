@@ -8,7 +8,7 @@ import (
 	"errors"
 	owm "github.com/briandowns/openweathermap"
 	"github.com/bwmarrin/discordgo"
-	"github.com/DMXMax/noppa/command"
+	"github.com/DMXMax/hugin/command"
 )
 
 

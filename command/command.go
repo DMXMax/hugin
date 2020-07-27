@@ -3,8 +3,8 @@ package command
 import (
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/DMXMax/noppa/data"
-	"github.com/DMXMax/noppa/user"
+	"github.com/DMXMax/hugin/data"
+	"github.com/DMXMax/hugin/user"
 	"context"
 
 )

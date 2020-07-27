@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	msg "github.com/DMXMax/noppa/msghandler"
-	"github.com/DMXMax/noppa/weather"
+	msg "github.com/DMXMax/hugin/msghandler"
+	"github.com/DMXMax/hugin/weather"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -52,6 +52,7 @@ func main() {
 	<-sc
 
 	// Cleanly close down the Discord session.
+	log.Println("Shutting Down")
 	dg.Close()
 }
 

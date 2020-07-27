@@ -23,8 +23,13 @@ cloud.google.com/go/storage v1.5.0/go.mod h1:tpKbwo567HUNpVclU5sGELwQWBDZ8gh0Zeo
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
+github.com/DMXMax/noppa v0.0.0-20200226053950-07a160933a4c h1:g7DxTVZOyk8Kdoaosy+wzMIxE0ysDzHL8meru/68y1Y=
+github.com/DMXMax/noppa v0.0.0-20200226053950-07a160933a4c/go.mod h1:I9WOA0KUASwpP1xekAqnNc3tJPDk1HKZ4+E3DbTX9Rw=
+github.com/DMXMax/noppa/weather v0.0.0-20200216080359-e5376c6d4ad1 h1:vC3HOSTVxvXEyOvLtBpC5NYvgXdu1tre428Cpj40T4U=
+github.com/DMXMax/noppa/weather v0.0.0-20200216080359-e5376c6d4ad1/go.mod h1:4XOcGdpysqmaUBWBePydf9ykzvIsyzlSfGAyY76gRYw=
 github.com/briandowns/openweathermap v0.13.0 h1:Mt+fS6+3q7QjcPu5lNoOVpJQfzs62QJ78gd4QzoS+MA=
 github.com/briandowns/openweathermap v0.13.0/go.mod h1:8g1Bgq9PbPpXIA3sdlWmWf2JpiWGJee/O4Q+ddYO6+k=
+github.com/bwmarrin/discordgo v0.20.1/go.mod h1:O9S4p+ofTFwB02em7jkpkV8M3R0/PUVOwN61zSZ0r4Q=
 github.com/bwmarrin/discordgo v0.20.2 h1:nA7jiTtqUA9lT93WL2jPjUp8ZTEInRujBdx1C9gkr20=
 github.com/bwmarrin/discordgo v0.20.2/go.mod h1:O9S4p+ofTFwB02em7jkpkV8M3R0/PUVOwN61zSZ0r4Q=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

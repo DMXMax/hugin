@@ -4,29 +4,34 @@ import (
 	"log"
 	"fmt"
 	"strings"
-	"github.com/DMXMax/noppa/dictionary"
-	"github.com/DMXMax/noppa/weather"
+	"github.com/DMXMax/hugin/dictionary"
+	"github.com/DMXMax/hugin/weather"
 	"github.com/bwmarrin/discordgo"
-	"github.com/DMXMax/noppa/whois"
-	"github.com/DMXMax/noppa/command"
+	"github.com/DMXMax/hugin/whois"
+	"github.com/DMXMax/hugin/command"
 )
 
 var shushFlag bool = false
 
 // message is created on any channel that the autenticated bot has access to.
 func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.ID == s.State.User.ID {
+	//ignore message to self and messages where the author cannot be determined
+	if m.Author.ID == s.State.User.ID || m.Author.ID == "" {
 		return
 	}
 
 	if shushFlag && m.Author.ID != "427628065720500239"{
 		return
 	}
-	log.Printf("Guild %v\n", m.GuildID)
-	if g,err := s.Guild(m.GuildID); err == nil {
-		log.Printf("Guild = %v\n", g.Name)
-	} else {
-		log.Println(err)
+	if( m.GuildID != ""){
+		if g,err := s.Guild(m.GuildID); err == nil {
+			log.Printf("Guild = %v\n", g.Name)
+		} else {
+			log.Println("Error, HandleMessageCreate, retrieving guild", err)
+
+		}
+	}else{
+		log.Println("No Guild ID availabile. Private Message?")
 	}
 
 	msgflds := strings.Fields(m.Content)
@@ -36,12 +41,20 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			//weather.HandleWeatherRequest(s, m)
 			_ = weather.WeatherCommand.Call(s,m)
 		case "!def":
-			dictionary.HandleDictionaryRequest(msgflds[1:], s, m)
+			if  len(msgflds) > 1{
+				dictionary.HandleDictionaryRequest(msgflds[1:], s, m)
+			} else {
+				s.ChannelMessageSend(m.ChannelID, ":confused:")
+			}
 		case "!ping":
 			s.ChannelMessageSend(m.ChannelID,
 				fmt.Sprintf("Pong, %s", m.Author.Mention()))
 		case "!whois":
-			whois.HandleRequest(msgflds[1:], s,m)
+			if len(msgflds) > 1 {
+				whois.HandleRequest(msgflds[1:], s,m)
+			}else{
+				s.ChannelMessageSend(m.ChannelID,":shrug:")
+			}
 		case "!shush":
 			if err := command.ShushCommand.Call(s,m); err == nil{
 				shushFlag = !shushFlag
