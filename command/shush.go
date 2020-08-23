@@ -6,9 +6,9 @@ import (
 )
 
 var ShushCommand Command = Command{
-	Name : "GetWeather",
+	Name : "Shush",
 	Scope : "admin",
-	Op : func(s *discordgo.Session, m *discordgo.MessageCreate) error { 
-		return nil
+	Op : func(s *discordgo.Session, m *discordgo.MessageCreate) (map[string]string,error) { 
+		return nil,nil
 	},
 }

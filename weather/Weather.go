@@ -33,7 +33,7 @@ var WeatherCommand command.Command = command.Command{
 	Op : HandleWeatherRequest,
 }
 
-func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) error {
+func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) (map[string]string, error) {
 
 	type City struct {
 		name  string
@@ -67,7 +67,7 @@ func HandleWeatherRequest(s *discordgo.Session, m *discordgo.MessageCreate) erro
 	
 	}
 }
-	return nil
+	return nil,nil
 }
 
 func getWindDirection(dir float64) string{
