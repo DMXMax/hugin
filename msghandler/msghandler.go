@@ -37,32 +37,37 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	msgflds := strings.Fields(m.Content)
 	if len(msgflds) > 0 {
 		switch strings.ToLower(msgflds[0]) {
-		case "!weather":
+		case "/weather":
 			//weather.HandleWeatherRequest(s, m)
-			_ = weather.WeatherCommand.Call(s,m)
-		case "!def":
+			_,_ = weather.WeatherCommand.Call(s,m)
+		case "/def":
 			if  len(msgflds) > 1{
 				dictionary.HandleDictionaryRequest(msgflds[1:], s, m)
 			} else {
 				s.ChannelMessageSend(m.ChannelID, ":confused:")
 			}
-		case "!ping":
+		case "/ping":
 			s.ChannelMessageSend(m.ChannelID,
 				fmt.Sprintf("Pong, %s", m.Author.Mention()))
-		case "!whois":
+		case "/whois":
 			if len(msgflds) > 1 {
 				whois.HandleRequest(msgflds[1:], s,m)
 			}else{
 				s.ChannelMessageSend(m.ChannelID,":shrug:")
 			}
-		case "!shush":
-			if err := command.ShushCommand.Call(s,m); err == nil{
+		case "/shush"://shush returns nothing and we're only looking for an error
+			if _,err := command.ShushCommand.Call(s,m); err == nil{
 				shushFlag = !shushFlag
 				if shushFlag{
 					s.ChannelMessageSend(m.ChannelID, "Entering Shush Mode")
 				} else {
 					s.ChannelMessageSend(m.ChannelID, "Listening")
 				}
+			}
+		case "/r":
+			if _, err := command.FateDiceCommand.Call(s,m); err != nil{
+				log.Println(err)
+				s.ChannelMessageSend(m.ChannelID, ":sad:")
 			}
 		}
 	}
