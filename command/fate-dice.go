@@ -36,6 +36,7 @@ var FateDiceCommand Command = Command{
 			log.Printf("Randomizer seeded with %v\n", seed)
 		}
 		result := processRoll(strings.Fields(m.Content))
+		log.Printf("fate-dice: %s - %#v\n", m.Author.Username, result)
 		if result.NeedHelp == true {
 			showHelp(s, m)
 		} else {
@@ -81,8 +82,6 @@ func processRoll(rollReq []string) RollResult {
 		Rolls:         [4]int{rand.Intn(3) - 1, rand.Intn(3) - 1, rand.Intn(3) - 1, rand.Intn(3) - 1},
 		NeedHelp:      needhelp,
 	}
-
-	log.Printf("%v\n", rollReq)
 
 	return result
 }
