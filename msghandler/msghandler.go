@@ -74,4 +74,6 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 
-
+func HandleMessageUpdate(s *discordgo.Session, m *discordgo.MessageUpdate){
+	HandleMessageCreate(s, &discordgo.MessageCreate{Message:m.Message})
+}

@@ -36,6 +36,7 @@ func main() {
 
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(msg.HandleMessageCreate)
+	dg.AddHandler(msg.HandleMessageUpdate)
 	dg.AddHandler(ready)
 
 	// Open a websocket connection to Discord and begin listening.
