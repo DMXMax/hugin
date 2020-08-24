@@ -16,7 +16,11 @@ var shushFlag bool = false
 // message is created on any channel that the autenticated bot has access to.
 func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	//ignore message to self and messages where the author cannot be determined
-	if m.Author.ID == s.State.User.ID || m.Author.ID == "" {
+	if m.Author == nil{
+		log.Println("Message sends nil author")
+		log.Println(m.Content)
+	}
+	if m.Author == nil || (m.Author.ID == s.State.User.ID || m.Author.ID == "") {
 		return
 	}
 
@@ -74,4 +78,6 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 
-
+func HandleMessageUpdate(s *discordgo.Session, m *discordgo.MessageUpdate){
+	HandleMessageCreate(s, &discordgo.MessageCreate{Message:m.Message})
+}
