@@ -51,9 +51,8 @@ func showResult(name string, res RollResult, s *discordgo.Session, m *discordgo.
 	if len(res.Note) == 0{
 		res.Note = "rolls"
 	}
-	msg := fmt.Sprintf("**%s** *%s*  (%+d,%+d,%+d,%+d) %+d   Approach: %+d	 **Total: %+d**",
-		name, res.Note,  res.Rolls[0], res.Rolls[1], 
-		res.Rolls[2], res.Rolls[3],res.RollTotal(),  res.ApproachValue, res.GrandTotal())
+	msg := fmt.Sprintf("**%s** *%s*  (%s) %+d   Approach: %+d	 **Total: %+d**",
+		name, res.Note, getRollString(res.Rolls),res.RollTotal(),  res.ApproachValue, res.GrandTotal())
 	s.ChannelMessageSend(m.ChannelID, msg)
 }
 
@@ -104,3 +103,14 @@ func getUsableName(m *discordgo.MessageCreate) string {
 	}
 	return name
 }
+
+func getRollString(roll [4]int)(result string){
+	fig := [3]rune{'\u2296', '\u2299', '\u2295'}
+	buf := [4]rune{}
+	for i,y := range roll{
+		buf[i]=fig[y+1]
+	}
+	result = string(buf[:])
+	return
+}
+
