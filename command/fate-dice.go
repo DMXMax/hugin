@@ -105,7 +105,7 @@ func getUsableName(m *discordgo.MessageCreate) string {
 }
 
 func getRollString(roll [4]int)(result string){
-	fig := [3]rune{'\u229E', '\u2299', '\u2295'}
+	fig := [3]rune{'\u2296', '\u2299', '\u2295'}
 	buf := [4]rune{}
 	for i,y := range roll{
 		buf[i]=fig[y+1]
