@@ -7,8 +7,6 @@ require (
 	cloud.google.com/go/datastore v1.2.0
 	cloud.google.com/go/pubsub v1.6.1 // indirect
 	cloud.google.com/go/storage v1.11.0 // indirect
-	github.com/DMXMax/noppa v0.0.0-20200226053950-07a160933a4c
-	github.com/DMXMax/noppa/weather v0.0.0-20200216080359-e5376c6d4ad1 // indirect
 	github.com/briandowns/openweathermap v0.16.0
 	github.com/bwmarrin/discordgo v0.22.0
 	github.com/go-sql-driver/mysql v1.5.0
