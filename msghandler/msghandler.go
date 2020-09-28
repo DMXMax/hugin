@@ -16,10 +16,6 @@ var shushFlag bool = false
 // message is created on any channel that the autenticated bot has access to.
 func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	//ignore message to self and messages where the author cannot be determined
-	if m.Author == nil{
-		log.Println("Message sends nil author")
-		log.Println(m.Content)
-	}
 	if m.Author == nil || (m.Author.ID == s.State.User.ID || m.Author.ID == "") {
 		return
 	}
@@ -34,8 +30,6 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			log.Println("Error, HandleMessageCreate, retrieving guild", err)
 
 		}
-	}else{
-		log.Println("No Guild ID availabile. Private Message?")
 	}
 
 	msgflds := strings.Fields(m.Content)
