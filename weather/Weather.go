@@ -4,13 +4,14 @@ import (
 	"fmt"
 	 "math"
 	"log"
-	"os"
 	"errors"
 	owm "github.com/briandowns/openweathermap"
 	"github.com/bwmarrin/discordgo"
 	"github.com/DMXMax/hugin/command"
+	"github.com/DMXMax/hugin/util"
 )
 
+const weather_key = "projects/131909995516/secrets/weather_key/versions/1"
 
 type WindVelocity struct{
 	KpH float64
@@ -21,8 +22,11 @@ type WindVelocity struct{
 var WeatherToken string
 
 func Init() error {
-	if WeatherToken = os.Getenv("NOPPA_WEATHER"); WeatherToken == "" {
-	return errors.New("No weather token")	
+	wt ,err := util.GetSecret(weather_key)
+	if err != nil {
+		return errors.New("No weather token")	
+	} else {
+		WeatherToken = wt
 	}
 	return nil //No error
 }

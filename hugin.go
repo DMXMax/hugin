@@ -9,8 +9,11 @@ import (
 
 	msg "github.com/DMXMax/hugin/msghandler"
 	"github.com/DMXMax/hugin/weather"
+	"github.com/DMXMax/hugin/util"
 	"github.com/bwmarrin/discordgo"
 )
+
+const noppa_pie = "projects/131909995516/secrets/noppa-pie/versions/1"
 
 // Variables used for command line parameters
 var (
@@ -23,7 +26,10 @@ func main() {
 		log.Fatalln("Error intializing weather service", err)
 		os.Exit(1)
 	}
-	if DiscordToken = os.Getenv("NOPPA_PIE"); DiscordToken == "" {
+	
+	DiscordToken, err := util.GetSecret(noppa_pie)
+
+	if err != nil{
 		fmt.Println("No token")
 		os.Exit(1)
 	}

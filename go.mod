@@ -3,6 +3,7 @@ module github.com/DMXMax/hugin
 go 1.13
 
 require (
+	cloud.google.com/go v0.65.0
 	cloud.google.com/go/bigquery v1.10.0 // indirect
 	cloud.google.com/go/datastore v1.2.0
 	cloud.google.com/go/pubsub v1.6.1 // indirect
@@ -17,6 +18,6 @@ require (
 	golang.org/x/sys v0.0.0-20200831180312-196b9ba8737a // indirect
 	golang.org/x/tools v0.0.0-20200903185744-af4cc2cd812e // indirect
 	google.golang.org/api v0.31.0
-	google.golang.org/genproto v0.0.0-20200903010400-9bfcb5116336 // indirect
+	google.golang.org/genproto v0.0.0-20200903010400-9bfcb5116336
 	honnef.co/go/tools v0.0.1-2020.1.5 // indirect
 )

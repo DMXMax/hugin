@@ -1,21 +1,23 @@
 package util
 
-import(
+import (
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	"context"
 	"fmt"
-	"log"
 	"github.com/bwmarrin/discordgo"
-
+	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	"log"
 )
 
 func GetAuthorInfo(s *discordgo.Session, m *discordgo.MessageCreate) string {
 	var prefix string
-	if m.GuildID != ""{
-		if g,err := s.Guild(m.GuildID); err == nil {
-			prefix=fmt.Sprintf("%s:%s", g.Name, m.Author.Username)
+	if m.GuildID != "" {
+		if g, err := s.Guild(m.GuildID); err == nil {
+			prefix = fmt.Sprintf("%s:%s", g.Name, m.Author.Username)
 		} else {
 			log.Println("Error, HandleMessageCreate, retrieving guild", err)
 		}
-	}else{
+	} else {
 		prefix = fmt.Sprintf("%s", m.Author.Username)
 	}
 	return prefix
@@ -31,4 +33,23 @@ func GetNickname(m *discordgo.MessageCreate) string {
 		}
 	}
 	return name
+}
+
+func GetSecret(version string) (string, error) {
+	ctx := context.Background()
+	client, err := secretmanager.NewClient(ctx)
+
+	if err == nil {
+		req := &secretmanagerpb.AccessSecretVersionRequest{
+			Name: version,
+		}
+		result, err := client.AccessSecretVersion(ctx, req)
+		if err == nil {
+			return string(result.Payload.Data), nil
+		} else {
+			return "", err
+		}
+	} else {
+		return "", err
+	}
 }
