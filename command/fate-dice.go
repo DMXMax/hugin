@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/DMXMax/hugin/util"
 )
 
 type RollResult struct {
@@ -36,11 +37,11 @@ var FateDiceCommand Command = Command{
 			log.Printf("Randomizer seeded with %v\n", seed)
 		}
 		result := processRoll(strings.Fields(m.Content))
-		log.Printf("fate-dice: %s - %#v\n", m.Author.Username, result)
+		log.Printf("%s rolls dice %#v\n",util.GetAuthorInfo(s,m) , result)
 		if result.NeedHelp == true {
 			showHelp(s, m)
 		} else {
-			showResult(getUsableName(m), result, s, m)
+			showResult(util.GetNickname(m), result, s, m)
 		}
 		return nil, nil
 
@@ -92,17 +93,6 @@ func showHelp(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 
-func getUsableName(m *discordgo.MessageCreate) string {
-	name := "Nobody"
-	if m.Member != nil {
-		name = m.Member.Nick
-	} else {
-		if m.Author != nil {
-			name = m.Author.Username
-		}
-	}
-	return name
-}
 
 func getRollString(roll [4]int)(result string){
 	fig := [3]rune{'\u2296', '\u2299', '\u2295'}

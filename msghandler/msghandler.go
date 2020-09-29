@@ -9,6 +9,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/DMXMax/hugin/whois"
 	"github.com/DMXMax/hugin/command"
+	"github.com/DMXMax/hugin/util"
 )
 
 var shushFlag bool = false
@@ -23,14 +24,6 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if shushFlag && m.Author.ID != "427628065720500239"{
 		return
 	}
-	if( m.GuildID != ""){
-		if g,err := s.Guild(m.GuildID); err == nil {
-			log.Printf("Guild = %v\n", g.Name)
-		} else {
-			log.Println("Error, HandleMessageCreate, retrieving guild", err)
-
-		}
-	}
 
 	msgflds := strings.Fields(m.Content)
 	if len(msgflds) > 0 {
@@ -38,13 +31,16 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		case "/weather":
 			//weather.HandleWeatherRequest(s, m)
 			_,_ = weather.WeatherCommand.Call(s,m)
+			log.Printf("%s checked the weather", util.GetAuthorInfo(s,m))
 		case "/def":
+			log.Printf("%s got a definition", util.GetAuthorInfo(s,m))
 			if  len(msgflds) > 1{
 				dictionary.HandleDictionaryRequest(msgflds[1:], s, m)
 			} else {
 				s.ChannelMessageSend(m.ChannelID, ":confused:")
 			}
 		case "/ping":
+			log.Printf("%s sent a Ping", util.GetAuthorInfo(s,m))
 			s.ChannelMessageSend(m.ChannelID,
 				fmt.Sprintf("Pong, %s", m.Author.Mention()))
 		case "/whois":
