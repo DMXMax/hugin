@@ -58,7 +58,7 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 					s.ChannelMessageSend(m.ChannelID, "Listening")
 				}
 			}
-		case "/r":
+		case "/rfae":
 			if _, err := command.FateDiceCommand.Call(s,m); err != nil{
 				log.Println(err)
 				s.ChannelMessageSend(m.ChannelID, ":sad:")
