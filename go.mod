@@ -1,23 +1,12 @@
 module github.com/DMXMax/hugin
 
-go 1.13
+go 1.15
 
 require (
-	cloud.google.com/go v0.65.0
-	cloud.google.com/go/bigquery v1.10.0 // indirect
-	cloud.google.com/go/datastore v1.2.0
-	cloud.google.com/go/pubsub v1.6.1 // indirect
-	cloud.google.com/go/storage v1.11.0 // indirect
+	cloud.google.com/go v0.72.0
+	cloud.google.com/go/datastore v1.3.0
 	github.com/briandowns/openweathermap v0.16.0
 	github.com/bwmarrin/discordgo v0.22.0
-	github.com/go-sql-driver/mysql v1.5.0
-	github.com/gorilla/websocket v1.4.2 // indirect
-	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
-	golang.org/x/exp v0.0.0-20200901203048-c4f52b2c50aa // indirect
-	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43 // indirect
-	golang.org/x/sys v0.0.0-20200831180312-196b9ba8737a // indirect
-	golang.org/x/tools v0.0.0-20200903185744-af4cc2cd812e // indirect
-	google.golang.org/api v0.31.0
-	google.golang.org/genproto v0.0.0-20200903010400-9bfcb5116336
-	honnef.co/go/tools v0.0.1-2020.1.5 // indirect
+	google.golang.org/api v0.35.0
+	google.golang.org/genproto v0.0.0-20201113130914-ce600e9a6f9e
 )

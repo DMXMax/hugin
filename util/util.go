@@ -27,6 +27,11 @@ func GetNickname(m *discordgo.MessageCreate) string {
 	name := "Nobody"
 	if m.Member != nil {
 		name = m.Member.Nick
+		if name == ""{
+			if m.Author != nil{
+				name = m.Author.Username
+			}
+		}
 	} else {
 		if m.Author != nil {
 			name = m.Author.Username
