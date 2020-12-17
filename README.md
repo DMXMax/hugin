@@ -5,3 +5,5 @@ It can only roll FAE dice. It will tell you how when you type
 
 # Building
 I guess that's all for now. It needs work
+
+`gcloud builds submit --tag us-central1-docker.pkg.dev/hugin-00001/quickstart-docker-repo/hugin:latest`
