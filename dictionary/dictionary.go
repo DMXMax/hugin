@@ -20,7 +20,6 @@ func HandleDictionaryRequest(words []string, s *dg.Session,
 	ctx := context.Background()
 
 	if client, err := datastore.NewClient(ctx, "hugin-00001"); err == nil {
-		log.Println("Got a datastore client")
 		q := datastore.NewQuery("dictEntry").Filter("word =", strings.
 			ToLower(words[0]))
 		t := client.Run(ctx, q)
