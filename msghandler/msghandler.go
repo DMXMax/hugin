@@ -66,6 +66,13 @@ func HandleMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				log.Println(err)
 				s.ChannelMessageSend(m.ChannelID, ":sad:")
 			}
+		case "/rf":
+			if _, err := command.FateDiceCommand.Call(s, m, map[string]string{
+				"skillName": "Skill",
+			}); err != nil {
+				log.Println(err)
+				s.ChannelMessageSend(m.ChannelID, ":sad:")
+			}
 		}
 	}
 }
