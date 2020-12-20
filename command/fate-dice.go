@@ -60,7 +60,8 @@ func showResult(name string, res RollResult, s *discordgo.Session, m *discordgo.
 		res.Note = "rolls"
 	}
 	msg := fmt.Sprintf("**%s** *%s*  (%s) %+d   %s: %+d	 **Total: %+d**",
-		name, res.Note, getRollString(res.Rolls), params["skillName"], res.RollTotal(), res.ApproachValue, res.GrandTotal())
+		name, res.Note, getRollString(res.Rolls), res.RollTotal(), params["skillName"],
+		res.ApproachValue, res.GrandTotal())
 	s.ChannelMessageSend(m.ChannelID, msg)
 }
 
