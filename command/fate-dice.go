@@ -2,13 +2,14 @@ package command
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"math/rand"
 	"strconv"
 	"strings"
 	"time"
+
 	"github.com/DMXMax/hugin/util"
+	"github.com/bwmarrin/discordgo"
 )
 
 type RollResult struct {
@@ -30,14 +31,14 @@ var seed int64
 var FateDiceCommand Command = Command{
 	Name:  "fate-dice",
 	Scope: "any",
-	Op: func(s *discordgo.Session, m *discordgo.MessageCreate) (map[string]string, error) {
+	Op: func(s *discordgo.Session, m *discordgo.MessageCreate, i interface{}) (map[string]string, error) {
 		if seed == 0 {
 			seed = time.Now().UnixNano()
 			rand.Seed(seed)
 			log.Printf("Randomizer seeded with %v\n", seed)
 		}
 		result := processRoll(strings.Fields(m.Content))
-		log.Printf("%s rolls dice %#v\n",util.GetAuthorInfo(s,m) , result)
+		log.Printf("%s rolls dice %#v\n", util.GetAuthorInfo(s, m), result)
 		if result.NeedHelp == true {
 			showHelp(s, m)
 		} else {
@@ -49,11 +50,11 @@ var FateDiceCommand Command = Command{
 }
 
 func showResult(name string, res RollResult, s *discordgo.Session, m *discordgo.MessageCreate) {
-	if len(res.Note) == 0{
+	if len(res.Note) == 0 {
 		res.Note = "rolls"
 	}
 	msg := fmt.Sprintf("**%s** *%s*  (%s) %+d   Approach: %+d	 **Total: %+d**",
-		name, res.Note, getRollString(res.Rolls),res.RollTotal(),  res.ApproachValue, res.GrandTotal())
+		name, res.Note, getRollString(res.Rolls), res.RollTotal(), res.ApproachValue, res.GrandTotal())
 	s.ChannelMessageSend(m.ChannelID, msg)
 }
 
@@ -86,21 +87,18 @@ func processRoll(rollReq []string) RollResult {
 	return result
 }
 func showHelp(s *discordgo.Session, m *discordgo.MessageCreate) {
-	msg :="Are you trying to roll dice? The Dice command looks like this:"+
-	"```/r [Approach Value] [Note]```"+
-	"If you don't supply an approach value, your value will be Mediocre(0), and the rest of the command string becomes the note."
+	msg := "Are you trying to roll dice? The Dice command looks like this:" +
+		"```/r [Approach Value] [Note]```" +
+		"If you don't supply an approach value, your value will be Mediocre(0), and the rest of the command string becomes the note."
 	s.ChannelMessageSend(m.ChannelID, msg)
 }
 
-
-
-func getRollString(roll [4]int)(result string){
+func getRollString(roll [4]int) (result string) {
 	fig := [3]rune{'\u2296', '\u2299', '\u2295'}
 	buf := [4]rune{}
-	for i,y := range roll{
-		buf[i]=fig[y+1]
+	for i, y := range roll {
+		buf[i] = fig[y+1]
 	}
 	result = string(buf[:])
 	return
 }
-
