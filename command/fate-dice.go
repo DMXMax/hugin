@@ -64,7 +64,7 @@ func showResult(name string, res RollResult, s *discordgo.Session, m *discordgo.
 	s.ChannelMessageSend(m.ChannelID, msg)
 }
 
-func processRoll(rollReq []string, m map[string]string) RollResult {
+func processRoll(rollReq []string) RollResult {
 	note := ""
 	approach := 0
 	needhelp := false
