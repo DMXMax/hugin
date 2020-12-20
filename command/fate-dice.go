@@ -32,33 +32,39 @@ var FateDiceCommand Command = Command{
 	Name:  "fate-dice",
 	Scope: "any",
 	Op: func(s *discordgo.Session, m *discordgo.MessageCreate, i interface{}) (map[string]string, error) {
-		if seed == 0 {
-			seed = time.Now().UnixNano()
-			rand.Seed(seed)
-			log.Printf("Randomizer seeded with %v\n", seed)
-		}
-		result := processRoll(strings.Fields(m.Content))
-		log.Printf("%s rolls dice %#v\n", util.GetAuthorInfo(s, m), result)
-		if result.NeedHelp == true {
-			showHelp(s, m)
+		params, ok := i.(map[string]string)
+		if ok {
+			if seed == 0 {
+				seed = time.Now().UnixNano()
+				rand.Seed(seed)
+				log.Printf("Randomizer seeded with %v\n", seed)
+			}
+			result := processRoll(strings.Fields(m.Content))
+			log.Printf("%s rolls dice %#v\n", util.GetAuthorInfo(s, m), result)
+			if result.NeedHelp == true {
+				showHelp(s, m)
+			} else {
+				showResult(util.GetNickname(m), result, s, m, params)
+			}
+			return nil, nil
 		} else {
-			showResult(util.GetNickname(m), result, s, m)
+			return nil, nil
 		}
-		return nil, nil
 
 	},
 }
 
-func showResult(name string, res RollResult, s *discordgo.Session, m *discordgo.MessageCreate) {
+func showResult(name string, res RollResult, s *discordgo.Session, m *discordgo.MessageCreate,
+	params map[string]string) {
 	if len(res.Note) == 0 {
 		res.Note = "rolls"
 	}
-	msg := fmt.Sprintf("**%s** *%s*  (%s) %+d   Approach: %+d	 **Total: %+d**",
-		name, res.Note, getRollString(res.Rolls), res.RollTotal(), res.ApproachValue, res.GrandTotal())
+	msg := fmt.Sprintf("**%s** *%s*  (%s) %+d   %s: %+d	 **Total: %+d**",
+		name, res.Note, getRollString(res.Rolls), params["skillName"], res.RollTotal(), res.ApproachValue, res.GrandTotal())
 	s.ChannelMessageSend(m.ChannelID, msg)
 }
 
-func processRoll(rollReq []string) RollResult {
+func processRoll(rollReq []string, m map[string]string) RollResult {
 	note := ""
 	approach := 0
 	needhelp := false
